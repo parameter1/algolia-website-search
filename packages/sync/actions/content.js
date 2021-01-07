@@ -4,6 +4,9 @@ const transform = require('@algolia-website-search/transformers');
 const getIndexFor = ({ tenant, algolia }) => algolia.initIndex(`${tenant}_platform_content`);
 
 module.exports = {
+  /**
+   *
+   */
   deleteOne: async (params = {}, { tenant, algolia }) => {
     const { id } = await Joi.object({
       id: Joi.number().required(),
@@ -12,7 +15,15 @@ module.exports = {
     const index = getIndexFor({ tenant, algolia });
     return index.deleteObject(`${id}`);
   },
+
+  /**
+   *
+   */
   saveAll: async () => {},
+
+  /**
+   *
+   */
   saveOne: async (params = {}, {
     algolia,
     dataloaders,

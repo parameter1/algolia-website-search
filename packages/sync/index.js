@@ -1,6 +1,6 @@
 const createLoaders = require('@algolia-website-search/dataloaders');
 const createRepos = require('@algolia-website-search/repositories');
-const { get } = require('@algolia-website-search/utils');
+const { get } = require('@algolia-website-search/utils/object-path');
 
 const algolia = require('./algolia');
 const mongodb = require('./mongodb');

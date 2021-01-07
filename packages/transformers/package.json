@@ -1,0 +1,26 @@
+{
+  "name": "@algolia-website-search/transformers",
+  "version": "0.0.0",
+  "description": "Transforms BaseCMS data models to Algolia objects.",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "homepage": "https://github.com/parameter1/algolia-website-search/tree/master/packages/transformers#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parameter1/algolia-website-search.git",
+    "directory": "packages/transformers"
+  },
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --ext .js ./",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

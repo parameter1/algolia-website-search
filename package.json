@@ -1,8 +1,8 @@
 {
-  "name": "algolia-search-service",
+  "name": "algolia-website-search",
   "author": "Jacob Bare <jacob@parameter1.com>",
   "private": true,
-  "repository": "https://github.com/parameter1/algolia-search-service.git",
+  "repository": "https://github.com/parameter1/algolia-website-search.git",
   "license": "MIT",
   "scripts": {
     "test": "lerna run test",

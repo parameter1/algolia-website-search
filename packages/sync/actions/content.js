@@ -25,6 +25,11 @@ const projection = {
 };
 
 module.exports = {
+  clear: async (params, { tenant, algolia }) => {
+    const index = getIndexFor({ tenant, algolia });
+    return index.clearObjects();
+  },
+
   /**
    *
    */

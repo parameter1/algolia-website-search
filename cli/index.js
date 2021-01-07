@@ -31,6 +31,7 @@ const run = async () => {
       name: 'syncAction',
       message: 'Which sync action would you like to run?',
       choices: [
+        { name: 'Content: Clear', value: 'content.clear' },
         { name: 'Content: Save One', value: 'content.saveOne' },
         { name: 'Content: Save All', value: 'content.saveAll' },
       ],
@@ -53,11 +54,16 @@ const run = async () => {
 
   if (command === 'sync') {
     log(`Running ${command}:${syncAction}...`);
-    if (syncAction === 'content.saveOne') {
-      await sync({ tenant, action: syncAction }, { id: contentId });
-    } else if (syncAction === 'content.saveAll') {
-      await sync({ tenant, action: syncAction });
+
+    let args = {};
+    switch (syncAction) {
+      case 'content.saveOne':
+        args = { id: contentId };
+        break;
+      default:
+        args = {};
     }
+    await sync({ tenant, action: syncAction }, args);
   }
 
   await mongodb.close();

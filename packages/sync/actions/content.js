@@ -1,5 +1,7 @@
 const Joi = require('@parameter1/joi');
 const transform = require('@algolia-website-search/transformers');
+const batch = require('@algolia-website-search/utils/batch');
+const { iterateCursor } = require('@parameter1/mongodb/utils');
 
 const getIndexFor = ({ tenant, algolia }) => algolia.initIndex(`${tenant}_platform_content`);
 
@@ -38,8 +40,44 @@ module.exports = {
   /**
    *
    */
-  saveAll: async () => {
+  saveAll: async (params, {
+    algolia,
+    dataloaders,
+    repos,
+    tenant,
+  }) => {
+    const limit = 1000;
+    const index = getIndexFor({ tenant, algolia });
+    const { platformContent } = repos;
+    const query = {};
+    const totalCount = await platformContent.countDocuments({ query });
 
+    const retriever = async ({ skip }) => platformContent.find({
+      query,
+      options: {
+        sort: { _id: 1 },
+        limit,
+        skip,
+        projection,
+      },
+    });
+
+    const handler = async ({ results: cursor }) => {
+      const objects = [];
+      await iterateCursor(cursor, async (doc) => {
+        const object = await transform('platform.content', { doc }, { dataloaders });
+        objects.push(object);
+      });
+      await index.saveObjects(objects);
+    };
+
+    await batch({
+      name: 'content.saveAll',
+      totalCount,
+      limit,
+      handler,
+      retriever,
+    });
   },
 
   /**

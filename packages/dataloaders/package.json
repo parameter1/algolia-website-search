@@ -1,0 +1,27 @@
+{
+  "name": "@algolia-website-search/dataloaders",
+  "version": "0.0.0",
+  "description": "Factory for creating BaseCMS dataloaders.",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "homepage": "https://github.com/parameter1/algolia-website-search/tree/master/packages/dataloaders#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parameter1/algolia-website-search.git",
+    "directory": "packages/dataloaders"
+  },
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --ext .js ./",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@parameter1/dataloader-mongodb": "^1.0.9"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

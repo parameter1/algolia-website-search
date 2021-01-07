@@ -926,6 +926,21 @@
     "@octokit/openapi-types" "^2.2.0"
     "@types/node" ">= 8"
 
+"@parameter1/dataloader-mongodb@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@parameter1/dataloader-mongodb/-/dataloader-mongodb-1.0.9.tgz#6b164d5e29ba73e3568d8af0fa4776e489822353"
+  integrity sha512-OX46Y7qlTMw+oSJFON/5VSq7prLXe3AKd+ATFo6jJJ6Qso27PnB9GgJDUvUwwr78VKPWJHWobh+vSg/5LhlEtw==
+  dependencies:
+    "@parameter1/utils" "^1.1.11"
+    dataloader "^2.0.0"
+
+"@parameter1/utils@^1.1.11":
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/@parameter1/utils/-/utils-1.1.11.tgz#9109eaa7e840176720b8b5e9c0d00620b9d7cc40"
+  integrity sha512-6k7ZaG2jgQS4SHurHIEyXX41rq+YYCuyLek3oCnBK/7hg0pZjdvLXcJ9D9SffXnMduPpAR6dxacTdUPrZv0A/w==
+  dependencies:
+    object-path "^0.11.5"
+
 "@types/glob@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.3.tgz#e6ba80f36b7daad2c685acd9266382e68985c183"
@@ -1828,6 +1843,11 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+dataloader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.0.0.tgz#41eaf123db115987e21ca93c005cd7753c55fe6f"
+  integrity sha512-YzhyDAwA4TaQIhM5go+vCLmU0UikghC/t9DTQYZR2M/UvZ1MdOhPezSDZcjj9uqQJOMqjLcpWtyW2iNINdlatQ==
 
 dateformat@^3.0.0:
   version "3.0.3"

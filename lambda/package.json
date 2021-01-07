@@ -16,7 +16,8 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@algolia-website-search/sync": "^0.0.0"
+    "@algolia-website-search/sync": "^0.0.0",
+    "envalid": "^6.0.2"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

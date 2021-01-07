@@ -1,0 +1,28 @@
+{
+  "name": "@algolia-website-search/algolia",
+  "version": "0.0.0",
+  "description": "Factory for creating the Algolia website search client.",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "homepage": "https://github.com/parameter1/algolia-website-search/tree/master/packages/algolia#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parameter1/algolia-website-search.git",
+    "directory": "packages/algolia"
+  },
+  "private": true,
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .js ./",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "algoliasearch": "^4.8.3",
+    "envalid": "^6.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

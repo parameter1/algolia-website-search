@@ -19,7 +19,6 @@
   "dependencies": {
     "@parameter1/mongodb": "^1.4.5",
     "@parameter1/utils": "^1.1.11",
-    "envalid": "^6.0.2",
     "inflected": "^2.1.0"
   },
   "devDependencies": {

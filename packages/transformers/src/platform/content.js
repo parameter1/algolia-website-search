@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 const { get, getAsArray } = require('@algolia-website-search/utils/object-path');
-const dateToUNIX = require('../utils/date-to-unix');
+const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
 
 /**
  * @param {object} input

@@ -17,6 +17,8 @@
     "test": "yarn lint"
   },
   "dependencies": {
+    "@algolia-website-search/utils": "^0.0.0",
+    "cheerio": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

@@ -11,6 +11,7 @@
   },
   "workspaces": [
     "cli",
+    "lambda",
     "packages/*"
   ],
   "devDependencies": {

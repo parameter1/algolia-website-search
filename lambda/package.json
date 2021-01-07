@@ -1,0 +1,26 @@
+{
+  "name": "@algolia-website-search/lambda",
+  "version": "0.0.0",
+  "description": "BaseCMS+Alogolia website search sync CLI.",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "homepage": "https://github.com/parameter1/algolia-website-search/tree/master/packages/lambda#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parameter1/algolia-website-search.git",
+    "directory": "packages/lambda"
+  },
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ext .js ./",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@algolia-website-search/sync": "^0.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

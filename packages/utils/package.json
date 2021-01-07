@@ -1,0 +1,27 @@
+{
+  "name": "@algolia-website-search/utils",
+  "version": "0.0.0",
+  "description": "Algolia website search utility functions",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "homepage": "https://github.com/parameter1/algolia-website-search/tree/master/packages/utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parameter1/algolia-website-search.git",
+    "directory": "packages/utils"
+  },
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --ext .js ./",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "object-path": "^0.11.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

@@ -3,7 +3,4 @@ module.exports = {
   plugins: [
     'import',
   ],
-  rules: {
-    'no-underscore-dangle': ['error', { allow: ['_id'] }],
-  },
 };

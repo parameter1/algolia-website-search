@@ -11,7 +11,7 @@
   },
   "private": true,
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js ./",
     "test": "yarn lint"

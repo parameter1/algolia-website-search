@@ -10,7 +10,6 @@
     "lint": "lerna run lint"
   },
   "workspaces": [
-    "api",
     "cli",
     "packages/*"
   ],

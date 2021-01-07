@@ -3,8 +3,8 @@ const { get, getAsArray } = require('@algolia-website-search/utils/object-path')
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
 
 /**
- * @param {object} input
- * @param {object} input.doc The BaseCMS content document to transform
+ * @param {object} args
+ * @param {object} args.doc The BaseCMS content document to transform
  * @param {object} context
  * @param {object} context.dataloaders The BaseCMS dataloaders
  */

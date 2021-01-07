@@ -16,6 +16,15 @@ x-node-defaults: &node
     <<: *env
 
 services:
+  cli:
+    <<: *node
+    working_dir: /algolia-search/cli
+    entrypoint: ["node", "index.js"]
+    environment:
+      <<: *env
+      MONGO_URI: ${MONGO_URI}
+      ALGOLIA_API_KEY: ${ALGOLIA_API_KEY}
+
   lambda-example:
     <<: *node
     working_dir: /algolia-search/lambda

@@ -16,6 +16,11 @@ x-node-defaults: &node
     <<: *env
 
 services:
+  commands:
+    <<: *node
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+
   cli:
     <<: *node
     working_dir: /algolia-search/cli

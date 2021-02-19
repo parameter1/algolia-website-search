@@ -2,10 +2,11 @@ const Joi = require('@parameter1/joi');
 const transform = require('@algolia-website-search/transformers');
 const batch = require('@algolia-website-search/utils/batch');
 const { iterateCursor } = require('@parameter1/mongodb/utils');
+const tenantProjections = require('./content/tenant-projection');
 
 const getIndexFor = ({ tenant, algolia }) => algolia.initIndex(`${tenant}_platform_content`);
 
-const projection = {
+const standardProjection = {
   type: 1,
   name: 1,
   fullName: 1,
@@ -22,6 +23,11 @@ const projection = {
   'mutations.Website.body': 1,
   'mutations.Website.teaser': 1,
   sectionQuery: 1,
+};
+
+const getTenantProjection = ({ tenant }) => {
+  const tenantProjection = (tenantProjections[tenant]) ? tenantProjections[tenant] : {};
+  return tenantProjection;
 };
 
 module.exports = {
@@ -56,6 +62,7 @@ module.exports = {
     const { platformContent } = repos;
     const query = {};
     const totalCount = await platformContent.countDocuments({ query });
+    const projection = { ...standardProjection, ...getTenantProjection({ tenant }) };
 
     const retriever = async ({ skip }) => platformContent.find({
       query,
@@ -70,7 +77,7 @@ module.exports = {
     const handler = async ({ results: cursor }) => {
       const objects = [];
       await iterateCursor(cursor, async (doc) => {
-        const object = await transform('platform.content', { doc }, { dataloaders });
+        const object = await transform('platform.content', { doc, tenant }, { dataloaders });
         objects.push(object);
       });
       await index.saveObjects(objects);
@@ -98,8 +105,9 @@ module.exports = {
       id: Joi.number().required(),
     }).validateAsync(params);
     const index = getIndexFor({ tenant, algolia });
+    const projection = { ...standardProjection, ...getTenantProjection({ tenant }) };
     const doc = await repos.platformContent.findById({ id, options: { strict: true, projection } });
-    const object = await transform('platform.content', { doc }, { dataloaders });
+    const object = await transform('platform.content', { doc, tenant }, { dataloaders });
     return index.saveObject(object);
   },
 };

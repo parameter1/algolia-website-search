@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 const { get, getAsArray } = require('@algolia-website-search/utils/object-path');
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
+const getTenantTransformer = require('./content/tenant-transformers');
 
 /**
  * @param {object} args
@@ -8,7 +9,7 @@ const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
  * @param {object} context
  * @param {object} context.dataloaders The BaseCMS dataloaders
  */
-module.exports = async ({ doc }, { dataloaders }) => {
+module.exports = async ({ doc, tenant }, { dataloaders }) => {
   const scheduledSectionIds = getAsArray(doc, 'sectionQuery').map((q) => q.sectionId);
   const scheduledSections = scheduledSectionIds.length
     ? await dataloaders.websiteSection.loadMany({
@@ -26,7 +27,7 @@ module.exports = async ({ doc }, { dataloaders }) => {
     .replace(/\s\s+/g, '')
     .trim();
 
-  return {
+  const standardTransformer = {
     objectID: doc._id,
     type: doc.type,
     name: get(doc, 'mutations.Website.name', doc.name),
@@ -44,4 +45,8 @@ module.exports = async ({ doc }, { dataloaders }) => {
     published: dateToUNIX(doc.published),
     unpublished: dateToUNIX(doc.unpublished),
   };
+
+  const tenantTransformer = await getTenantTransformer({ doc, tenant });
+
+  return { ...standardTransformer, ...tenantTransformer };
 };

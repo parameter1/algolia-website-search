@@ -43,7 +43,7 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     created: dateToUNIX(doc.created),
     updated: dateToUNIX(doc.updated),
     published: dateToUNIX(doc.published),
-    unpublished: dateToUNIX(doc.unpublished),
+    unpublished: dateToUNIX(doc.unpublished || new Date(9999999990000)),
   };
 
   const tenantTransformer = await getTenantTransformer({ doc, tenant });

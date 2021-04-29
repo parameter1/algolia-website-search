@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const { get, getAsArray } = require('@algolia-website-search/utils/object-path');
+const { get, getAsArray, getAsObject } = require('@algolia-website-search/utils/object-path');
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
 const getTenantTransformer = require('./content/tenant-transformers');
 
@@ -73,6 +73,7 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
       const ids = isArray(doc[field]) ? doc[field] : [];
       return { ...o, [key]: ids };
     }, {}),
+    customAttributes: getAsObject(doc, 'customAttributes'),
   };
 
   const tenantTransformer = await getTenantTransformer({ doc, tenant });

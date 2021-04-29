@@ -39,6 +39,8 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     .replace(/\s\s+/g, '')
     .trim();
 
+  const { createdBy, updatedBy } = doc;
+
   const standardTransformer = {
     objectID: doc._id,
     type: doc.type,
@@ -56,6 +58,8 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     updated: dateToUNIX(doc.updated || new Date(0)),
     published: dateToUNIX(doc.published || new Date(0)),
     unpublished: dateToUNIX(doc.unpublished || new Date(9999999990000)),
+    ...(createdBy && { createdById: `${createdBy}` }),
+    ...(updatedBy && { updatedById: `${updatedBy}` }),
     companyId: doc.company,
     labels: getAsArray(doc, 'labels'),
     relatedToIds: getAsArray(doc, 'relatedTo').map((o) => o.oid),

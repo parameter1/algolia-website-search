@@ -37,6 +37,9 @@ const standardProjection = {
   salesContacts: 1,
 
   customAttributes: 1,
+
+  createdBy: 1,
+  updatedBy: 1,
 };
 
 const getTenantProjection = ({ tenant }) => {

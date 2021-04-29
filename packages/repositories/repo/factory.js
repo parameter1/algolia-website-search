@@ -3,6 +3,10 @@ const AbstractBaseRepo = require('./abstract');
 
 const resources = [
   {
+    namespace: 'magazine',
+    models: ['Schedule'],
+  },
+  {
     namespace: 'platform',
     models: ['Asset', 'Content', 'Product', 'Taxonomy', 'User'],
   },

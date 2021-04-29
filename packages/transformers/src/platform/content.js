@@ -39,13 +39,6 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     .replace(/\s\s+/g, '')
     .trim();
 
-  const {
-    company,
-    labels,
-    relatedTo,
-    taxonomy,
-  } = doc;
-
   const standardTransformer = {
     objectID: doc._id,
     type: doc.type,
@@ -63,10 +56,10 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     updated: dateToUNIX(doc.updated || new Date(0)),
     published: dateToUNIX(doc.published || new Date(0)),
     unpublished: dateToUNIX(doc.unpublished || new Date(9999999990000)),
-    ...(company && { companyId: company }),
-    labels: isArray(labels) ? labels : [],
-    relatedToIds: isArray(relatedTo) ? relatedTo.map((o) => o.oid) : [],
-    taxonomyIds: isArray(taxonomy) ? taxonomy.map((o) => o.oid) : [],
+    companyId: doc.company,
+    labels: getAsArray(doc, 'labels'),
+    relatedToIds: getAsArray(doc, 'relatedTo').map((o) => o.oid),
+    taxonomyIds: getAsArray(doc, 'taxonomy').map((o) => o.oid),
     contacts: contactFields.reduce((o, field) => {
       // convert `authors` into `authorIds`, etc.
       const key = `${field.replace(/s$/, '')}Ids`;

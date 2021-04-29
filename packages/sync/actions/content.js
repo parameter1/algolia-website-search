@@ -94,7 +94,7 @@ module.exports = {
     const handler = async ({ results: cursor }) => {
       const objects = [];
       await iterateCursor(cursor, async (doc) => {
-        const object = await transform('platform.content', { doc, tenant }, { dataloaders });
+        const object = await transform('platform.content', { doc, tenant }, { dataloaders, repos });
         objects.push(object);
       });
       await index.saveObjects(objects);
@@ -124,7 +124,7 @@ module.exports = {
     const index = getIndexFor({ tenant, algolia });
     const projection = { ...standardProjection, ...getTenantProjection({ tenant }) };
     const doc = await repos.platformContent.findById({ id, options: { strict: true, projection } });
-    const object = await transform('platform.content', { doc, tenant }, { dataloaders });
+    const object = await transform('platform.content', { doc, tenant }, { dataloaders, repos });
     return index.saveObject(object);
   },
 };

@@ -5,5 +5,5 @@
  */
 module.exports = (date) => {
   if (!(date instanceof Date)) return undefined;
-  return date.valueOf() / 1000;
+  return Math.round(date.valueOf() / 1000);
 };

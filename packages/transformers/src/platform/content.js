@@ -3,6 +3,7 @@ const { get, getAsArray, getAsObject } = require('@algolia-website-search/utils/
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
 const { iterateCursor } = require('@parameter1/mongodb/utils');
 const getTenantTransformer = require('./content/tenant-transformers');
+const dayjs = require('../dayjs');
 
 const { isArray } = Array;
 
@@ -30,20 +31,45 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
       projection: { site: 1 },
     }) : [];
 
-  const magazineSchedulesCursor = await repos.magazineSchedule.find({
-    query: { 'content.$id': doc._id, status: 1 },
-    projection: { product: 1, issue: 1, section: 1 },
-  });
+  const [magazineScheduleCursor, emailScheduleCursor] = await Promise.all([
+    repos.magazineSchedule.find({
+      query: { 'content.$id': doc._id, status: 1 },
+      projection: { product: 1, issue: 1, section: 1 },
+    }),
+    repos.emailSchedule.find({
+      query: { 'content.$id': doc._id, status: 1 },
+      projection: { product: 1, section: 1, deploymentDate: 1 },
+    }),
+  ]);
   const magazineSchedules = {
     publicationIds: new Set(),
     issueIds: new Set(),
     issueSectionIds: new Set(),
   };
-  await iterateCursor(magazineSchedulesCursor, async ({ product, issue, section }) => {
-    if (product) magazineSchedules.publicationIds.add(`${product}`);
-    if (issue) magazineSchedules.issueIds.add(issue);
-    if (issue && section) magazineSchedules.issueSectionIds.add(`${issue}_${section}`);
-  });
+  const emailSchedules = {
+    newsletterIds: new Set(),
+    sectionIds: new Set(),
+    days: {
+      newsletter: new Set(),
+      section: new Set(),
+    },
+  };
+  await Promise.all([
+    iterateCursor(magazineScheduleCursor, async ({ product, issue, section }) => {
+      if (product) magazineSchedules.publicationIds.add(`${product}`);
+      if (issue) magazineSchedules.issueIds.add(issue);
+      if (issue && section) magazineSchedules.issueSectionIds.add(`${issue}_${section}`);
+    }),
+    iterateCursor(emailScheduleCursor, async ({ product, section, deploymentDate }) => {
+      if (product) emailSchedules.newsletterIds.add(`${product}`);
+      if (section) emailSchedules.sectionIds.add(section);
+      if (deploymentDate) {
+        const day = dayjs(deploymentDate).tz('America/Chicago').format('YYYY-MM-DD');
+        if (product) emailSchedules.days.newsletter.add(`${day}__${product}`);
+        if (section) emailSchedules.days.section.add(`${day}__${section}`);
+      }
+    }),
+  ]);
 
   const scheduledSiteIds = scheduledSections.map((section) => get(section, 'site.oid')).filter((id) => id);
 
@@ -74,6 +100,14 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
       publicationIds: [...magazineSchedules.publicationIds],
       issueIds: [...magazineSchedules.issueIds],
       issueSectionIds: [...magazineSchedules.issueSectionIds],
+    },
+    emailSchedules: {
+      newsletterIds: [...emailSchedules.newsletterIds],
+      sectionIds: [...emailSchedules.sectionIds],
+      days: {
+        newsletter: [...emailSchedules.days.newsletter],
+        section: [...emailSchedules.days.section],
+      },
     },
     created: dateToUNIX(doc.created || new Date(0)),
     updated: dateToUNIX(doc.updated || new Date(0)),

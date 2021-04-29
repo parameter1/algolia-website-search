@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 const { get, getAsArray, getAsObject } = require('@algolia-website-search/utils/object-path');
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
+const { iterateCursor } = require('@parameter1/mongodb/utils');
 const getTenantTransformer = require('./content/tenant-transformers');
 
 const { isArray } = Array;
@@ -21,13 +22,28 @@ const contactFields = [
  * @param {object} context
  * @param {object} context.dataloaders The BaseCMS dataloaders
  */
-module.exports = async ({ doc, tenant }, { dataloaders }) => {
+module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
   const scheduledSectionIds = getAsArray(doc, 'sectionQuery').map((q) => q.sectionId);
   const scheduledSections = scheduledSectionIds.length
     ? await dataloaders.websiteSection.loadMany({
       ids: [...new Set(scheduledSectionIds)],
       projection: { site: 1 },
     }) : [];
+
+  const magazineSchedulesCursor = await repos.magazineSchedule.find({
+    query: { 'content.$id': doc._id, status: 1 },
+    projection: { product: 1, issue: 1, section: 1 },
+  });
+  const magazineSchedules = {
+    publicationIds: new Set(),
+    issueIds: new Set(),
+    issueSectionIds: new Set(),
+  };
+  await iterateCursor(magazineSchedulesCursor, async ({ product, issue, section }) => {
+    if (product) magazineSchedules.publicationIds.add(`${product}`);
+    if (issue) magazineSchedules.issueIds.add(issue);
+    if (issue && section) magazineSchedules.issueSectionIds.add(`${issue}_${section}`);
+  });
 
   const scheduledSiteIds = scheduledSections.map((section) => get(section, 'site.oid')).filter((id) => id);
 
@@ -53,6 +69,11 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     websiteSchedules: {
       siteIds: [...new Set(scheduledSiteIds.map((id) => `${id}`))],
       sectionIds: [...new Set(scheduledSectionIds)],
+    },
+    magazineSchedules: {
+      publicationIds: [...magazineSchedules.publicationIds],
+      issueIds: [...magazineSchedules.issueIds],
+      issueSectionIds: [...magazineSchedules.issueSectionIds],
     },
     created: dateToUNIX(doc.created || new Date(0)),
     updated: dateToUNIX(doc.updated || new Date(0)),

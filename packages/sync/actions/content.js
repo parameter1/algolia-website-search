@@ -23,6 +23,10 @@ const standardProjection = {
   'mutations.Website.body': 1,
   'mutations.Website.teaser': 1,
   sectionQuery: 1,
+  company: 1,
+  labels: 1,
+  relatedTo: 1,
+  taxonomy: 1,
 };
 
 const getTenantProjection = ({ tenant }) => {

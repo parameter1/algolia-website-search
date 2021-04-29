@@ -3,6 +3,8 @@ const { get, getAsArray } = require('@algolia-website-search/utils/object-path')
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
 const getTenantTransformer = require('./content/tenant-transformers');
 
+const { isArray } = Array;
+
 /**
  * @param {object} args
  * @param {object} args.doc The BaseCMS content document to transform
@@ -27,6 +29,13 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     .replace(/\s\s+/g, '')
     .trim();
 
+  const {
+    company,
+    labels,
+    relatedTo,
+    taxonomy,
+  } = doc;
+
   const standardTransformer = {
     objectID: doc._id,
     type: doc.type,
@@ -44,6 +53,10 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     updated: dateToUNIX(doc.updated),
     published: dateToUNIX(doc.published),
     unpublished: dateToUNIX(doc.unpublished || new Date(9999999990000)),
+    ...(company && { companyId: company }),
+    labels: isArray(labels) ? labels : [],
+    relatedToIds: isArray(relatedTo) ? relatedTo.map((o) => o.oid) : [],
+    taxonomyIds: isArray(taxonomy) ? taxonomy.map((o) => o.oid) : [],
   };
 
   const tenantTransformer = await getTenantTransformer({ doc, tenant });

@@ -27,6 +27,14 @@ const standardProjection = {
   labels: 1,
   relatedTo: 1,
   taxonomy: 1,
+
+  authors: 1,
+  contributors: 1,
+  listingContacts: 1,
+  marketingContacts: 1,
+  photographers: 1,
+  publicContacts: 1,
+  salesContacts: 1,
 };
 
 const getTenantProjection = ({ tenant }) => {

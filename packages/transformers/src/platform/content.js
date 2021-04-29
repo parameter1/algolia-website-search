@@ -5,6 +5,16 @@ const getTenantTransformer = require('./content/tenant-transformers');
 
 const { isArray } = Array;
 
+const contactFields = [
+  'authors',
+  'contributors',
+  'listingContacts',
+  'marketingContacts',
+  'photographers',
+  'publicContacts',
+  'salesContacts',
+];
+
 /**
  * @param {object} args
  * @param {object} args.doc The BaseCMS content document to transform
@@ -57,6 +67,12 @@ module.exports = async ({ doc, tenant }, { dataloaders }) => {
     labels: isArray(labels) ? labels : [],
     relatedToIds: isArray(relatedTo) ? relatedTo.map((o) => o.oid) : [],
     taxonomyIds: isArray(taxonomy) ? taxonomy.map((o) => o.oid) : [],
+    contacts: contactFields.reduce((o, field) => {
+      // convert `authors` into `authorIds`, etc.
+      const key = `${field.replace(/s$/, '')}Ids`;
+      const ids = isArray(doc[field]) ? doc[field] : [];
+      return { ...o, [key]: ids };
+    }, {}),
   };
 
   const tenantTransformer = await getTenantTransformer({ doc, tenant });

@@ -17,7 +17,7 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@parameter1/dataloader-mongodb": "^1.0.9"
+    "@parameter1/dataloader-mongodb": "^1.0.13"
   },
   "devDependencies": {
     "eslint": "^7.25.0",

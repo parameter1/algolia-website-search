@@ -21,8 +21,8 @@
     "@algolia-website-search/repositories": "^0.0.0",
     "@algolia-website-search/transformers": "^0.0.0",
     "@algolia-website-search/utils": "^0.0.0",
-    "@parameter1/joi": "^1.1.3",
-    "@parameter1/mongodb": "^1.4.5",
+    "@parameter1/joi": "^1.2.2",
+    "@parameter1/mongodb": "^1.4.10",
     "algoliasearch": "^4.8.3",
     "envalid": "^6.0.2"
   },

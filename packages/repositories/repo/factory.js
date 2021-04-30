@@ -12,7 +12,7 @@ const resources = [
   },
   {
     namespace: 'platform',
-    models: ['Asset', 'Content', 'Product', 'Taxonomy', 'User'],
+    models: ['Asset', 'Content', 'ModelHistory', 'Product', 'Taxonomy', 'User'],
   },
   {
     namespace: 'website',

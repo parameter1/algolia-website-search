@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@algolia-website-search/sync": "^0.0.0",
+    "dayjs": "^1.10.4",
     "inquirer": "^7.3.3"
   },
   "devDependencies": {

@@ -23,6 +23,23 @@ const standardProjection = {
   'mutations.Website.body': 1,
   'mutations.Website.teaser': 1,
   sectionQuery: 1,
+  company: 1,
+  labels: 1,
+  relatedTo: 1,
+  taxonomy: 1,
+
+  authors: 1,
+  contributors: 1,
+  listingContacts: 1,
+  marketingContacts: 1,
+  photographers: 1,
+  publicContacts: 1,
+  salesContacts: 1,
+
+  customAttributes: 1,
+
+  createdBy: 1,
+  updatedBy: 1,
 };
 
 const getTenantProjection = ({ tenant }) => {
@@ -67,7 +84,7 @@ module.exports = {
     const retriever = async ({ skip }) => platformContent.find({
       query,
       options: {
-        sort: { _id: 1 },
+        sort: { _id: -1 },
         limit,
         skip,
         projection,
@@ -77,7 +94,7 @@ module.exports = {
     const handler = async ({ results: cursor }) => {
       const objects = [];
       await iterateCursor(cursor, async (doc) => {
-        const object = await transform('platform.content', { doc, tenant }, { dataloaders });
+        const object = await transform('platform.content', { doc, tenant }, { dataloaders, repos });
         objects.push(object);
       });
       await index.saveObjects(objects);
@@ -107,7 +124,7 @@ module.exports = {
     const index = getIndexFor({ tenant, algolia });
     const projection = { ...standardProjection, ...getTenantProjection({ tenant }) };
     const doc = await repos.platformContent.findById({ id, options: { strict: true, projection } });
-    const object = await transform('platform.content', { doc, tenant }, { dataloaders });
+    const object = await transform('platform.content', { doc, tenant }, { dataloaders, repos });
     return index.saveObject(object);
   },
 };

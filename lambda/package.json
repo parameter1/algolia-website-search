@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "@algolia-website-search/sync": "^0.0.0",
-    "envalid": "^6.0.2"
+    "envalid": "^7.1.0"
   },
   "devDependencies": {
-    "eslint": "^7.17.0",
+    "eslint": "^7.25.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1"
   }

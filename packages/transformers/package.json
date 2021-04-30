@@ -18,9 +18,7 @@
   },
   "dependencies": {
     "@algolia-website-search/utils": "^0.0.0",
-    "@parameter1/mongodb": "^1.4.5",
-    "cheerio": "^1.0.0-rc.5",
-    "dayjs": "^1.10.4"
+    "cheerio": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

@@ -104,7 +104,7 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
     },
     created: dateToUNIX(doc.created || new Date(0)),
     updated: dateToUNIX(doc.updated || new Date(0)),
-    published: dateToUNIX(doc.published || new Date(0)),
+    published: dateToUNIX(doc.published),
     unpublished: dateToUNIX(doc.unpublished || new Date(9999999990000)),
     ...(createdBy && { createdById: `${createdBy}` }),
     ...(updatedBy && { updatedById: `${updatedBy}` }),

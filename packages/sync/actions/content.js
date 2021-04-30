@@ -5,6 +5,8 @@ const { iterateCursor } = require('@parameter1/mongodb/utils');
 const { ObjectID } = require('@parameter1/mongodb');
 const tenantProjections = require('./content/tenant-projection');
 
+const { log } = console;
+
 const getIndexFor = ({ tenant, algolia }) => algolia.initIndex(`${tenant}_platform_content`);
 
 const standardProjection = {
@@ -142,6 +144,7 @@ module.exports = {
       date: Joi.date().required(),
     }).validateAsync(params);
     const index = getIndexFor({ tenant, algolia });
+    log(`Syncing content and schedule changes since ${date.toISOString()}`);
 
     const history = await (async () => {
       const cursor = await repos.platformModelHistory.find({
@@ -189,6 +192,8 @@ module.exports = {
     // then merge them with the content ID set.
     emailContentIds.forEach((id) => contentIds.add(id));
     magazineContentIds.forEach((id) => contentIds.add(id));
+
+    log(`Found ${contentIds.size} content objects to sync.`);
 
     const limit = 1000;
     const query = { _id: { $in: [...contentIds] } };

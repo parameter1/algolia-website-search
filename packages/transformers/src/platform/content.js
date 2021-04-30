@@ -2,7 +2,6 @@ const cheerio = require('cheerio');
 const { get, getAsArray, getAsObject } = require('@algolia-website-search/utils/object-path');
 const dateToUNIX = require('@algolia-website-search/utils/date-to-unix');
 const getTenantTransformer = require('./content/tenant-transformers');
-const dayjs = require('../dayjs');
 
 const { isArray } = Array;
 
@@ -43,7 +42,7 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
     (async () => {
       const cursor = await repos.emailSchedule.find({
         query: { 'content.$id': doc._id, status: 1 },
-        projection: { product: 1, section: 1, deploymentDate: 1 },
+        projection: { product: 1, section: 1 },
       });
       return cursor.toArray();
     })(),
@@ -60,14 +59,9 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
     issueSectionIds: new Set(),
   });
 
-  const emailSchedules = scheduledEmail.reduce((sets, { product, section, deploymentDate }) => {
+  const emailSchedules = scheduledEmail.reduce((sets, { product, section }) => {
     if (product) sets.newsletterIds.add(`${product}`);
     if (section) sets.sectionIds.add(section);
-    if (deploymentDate) {
-      const day = dayjs(deploymentDate).tz('America/Chicago').format('YYYY-MM-DD');
-      if (product) sets.days.newsletter.add(`${day}__${product}`);
-      if (section) sets.days.section.add(`${day}__${section}`);
-    }
     return sets;
   }, {
     newsletterIds: new Set(),
@@ -111,10 +105,6 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
     emailSchedules: {
       newsletterIds: [...emailSchedules.newsletterIds],
       sectionIds: [...emailSchedules.sectionIds],
-      days: {
-        newsletter: [...emailSchedules.days.newsletter],
-        section: [...emailSchedules.days.section],
-      },
     },
     created: dateToUNIX(doc.created || new Date(0)),
     updated: dateToUNIX(doc.updated || new Date(0)),

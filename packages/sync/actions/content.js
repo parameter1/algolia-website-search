@@ -84,7 +84,7 @@ module.exports = {
     const retriever = async ({ skip }) => platformContent.find({
       query,
       options: {
-        sort: { _id: 1 },
+        sort: { _id: -1 },
         limit,
         skip,
         projection,

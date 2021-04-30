@@ -1032,34 +1032,34 @@
   dependencies:
     "@octokit/openapi-types" "^6.2.1"
 
-"@parameter1/dataloader-mongodb@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/@parameter1/dataloader-mongodb/-/dataloader-mongodb-1.0.13.tgz#53c01d4b124a63766ddc33cc443909077da1faed"
-  integrity sha512-RLjxw2vHHxpnQHPTN0jmju8ELBnNfK1oIvxI6EScKWkMzsSDsi48P4djIppa3g5mT314AX8ZHnUZrFbP5VQHkw==
+"@parameter1/dataloader-mongodb@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@parameter1/dataloader-mongodb/-/dataloader-mongodb-1.0.14.tgz#db8f05c433710ea1a94b064420f5388024105e47"
+  integrity sha512-Sij4Yl+/MRhrHyRdMrbetHJyTBBMZyPeO/RsizNwUTIpNLnb+T4sqNxrNknZ5r24V38PlCJz3I6UGtUz84cKag==
   dependencies:
-    "@parameter1/utils" "^1.1.15"
+    "@parameter1/utils" "^1.1.16"
     dataloader "^2.0.0"
 
-"@parameter1/joi@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@parameter1/joi/-/joi-1.2.2.tgz#d3f71a385151e7ae86f4ae395976722b45750cd2"
-  integrity sha512-MnjI96UB5lsj+Pa0ztRkYIMbi7b0RE2iGJ1KrJxP7D6CXQKdQk8/QRT3dCP3zuQwTmDmNlLpKE5HRBjl3N2vDQ==
+"@parameter1/joi@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@parameter1/joi/-/joi-1.2.3.tgz#1d93ae29264679783140566113c9ca4a253949b6"
+  integrity sha512-yeqz8gogijxXyh7PEbGBiJm01ZuugMr0Vp0FCRzu/XX5ls9KRo6rVeCfJuZD34vXYG1j5kUSA9bWwrsNsQbJRA==
   dependencies:
     joi "^17.4.0"
 
-"@parameter1/mongodb@^1.4.10":
-  version "1.4.10"
-  resolved "https://registry.yarnpkg.com/@parameter1/mongodb/-/mongodb-1.4.10.tgz#d5e5930a19fa1fad13377f9aff77dd8269a3e983"
-  integrity sha512-DvE2J+0d9YYg7lpiFBpR7G++GJQZN8wzDYPVhpdnfO8gIWloxLRooxpr8PFUU38WRASZf3EmHSIQoi7uIQ+ZMw==
+"@parameter1/mongodb@^1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@parameter1/mongodb/-/mongodb-1.4.11.tgz#64e90365fa3a4f89ca4d263849dca119f0ed7d63"
+  integrity sha512-1JzhOAk7PglZB5kaVDavUM/54/5TGDRT9oCLK+ONW0TA9nKKzLHOVsGuslQ85Bxmu1ucCYJ4NoEHchU+C89Hew==
   dependencies:
-    "@parameter1/utils" "^1.1.15"
+    "@parameter1/utils" "^1.1.16"
     async "^3.2.0"
     mongodb "^3.6.6"
 
-"@parameter1/utils@^1.1.15":
-  version "1.1.15"
-  resolved "https://registry.yarnpkg.com/@parameter1/utils/-/utils-1.1.15.tgz#c0349f7a229efe47cd1b4805876d7a78ddf039e9"
-  integrity sha512-Mw9mYDZMWBEELGelp7OjLc3RiDTIECVOgVT/JTiBU2SdkNnBTTV1X9qXr8FvDHMTafnDrRJRGJImUrekDdwSaQ==
+"@parameter1/utils@^1.1.16":
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/@parameter1/utils/-/utils-1.1.16.tgz#ca8120b773084d86e415ca8ebd2871c0af81595e"
+  integrity sha512-gWpGaO6pVbWnwZ73Roulgri3O9uqSKJFsHmfvzalpmB44c1u/urHJAP7xbWlFxgE6D0gaqaZ+ESKcvQDbdMl8w==
   dependencies:
     object-path "^0.11.5"
 

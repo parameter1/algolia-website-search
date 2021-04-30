@@ -17,8 +17,8 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@parameter1/mongodb": "^1.4.10",
-    "@parameter1/utils": "^1.1.15",
+    "@parameter1/mongodb": "^1.4.11",
+    "@parameter1/utils": "^1.1.16",
     "inflected": "^2.1.0"
   },
   "devDependencies": {

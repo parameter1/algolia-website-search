@@ -66,10 +66,6 @@ module.exports = async ({ doc, tenant }, { dataloaders, repos }) => {
   }, {
     newsletterIds: new Set(),
     sectionIds: new Set(),
-    days: {
-      newsletter: new Set(),
-      section: new Set(),
-    },
   });
 
   const scheduledSiteIds = scheduledSections.map((section) => get(section, 'site.oid')).filter((id) => id);

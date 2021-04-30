@@ -2,6 +2,7 @@ const Joi = require('@parameter1/joi');
 const transform = require('@algolia-website-search/transformers');
 const batch = require('@algolia-website-search/utils/batch');
 const { iterateCursor } = require('@parameter1/mongodb/utils');
+const { ObjectID } = require('@parameter1/mongodb');
 const tenantProjections = require('./content/tenant-projection');
 
 const getIndexFor = ({ tenant, algolia }) => algolia.initIndex(`${tenant}_platform_content`);
@@ -126,5 +127,98 @@ module.exports = {
     const doc = await repos.platformContent.findById({ id, options: { strict: true, projection } });
     const object = await transform('platform.content', { doc, tenant }, { dataloaders, repos });
     return index.saveObject(object);
+  },
+
+  /**
+   *
+   */
+  saveSince: async (params = {}, {
+    algolia,
+    dataloaders,
+    repos,
+    tenant,
+  }) => {
+    const { date } = await Joi.object({
+      date: Joi.date().required(),
+    }).validateAsync(params);
+    const index = getIndexFor({ tenant, algolia });
+
+    const history = await (async () => {
+      const cursor = await repos.platformModelHistory.find({
+        query: {
+          date: { $gte: date },
+          $or: [
+            { 'model.type': { $in: ['Email\\Schedule', 'Magazine\\Schdule'] } },
+            { 'model.type': /Platform\\Content/ },
+          ],
+        },
+        options: { projection: { model: 1 } },
+      });
+      return cursor.toArray();
+    })();
+
+    const {
+      contentIds,
+      emailScheduleIds,
+      magazineScheduleIds,
+    } = history.reduce((sets, { model }) => {
+      const { id, type } = model;
+      if (/^Platform/.test(type)) { sets.contentIds.add(id); return sets; }
+      if (type === 'Email\\Schedule') { sets.emailScheduleIds.add(id); return sets; }
+      sets.magazineScheduleIds.add(id);
+      return sets;
+    }, {
+      contentIds: new Set(),
+      emailScheduleIds: new Set(),
+      magazineScheduleIds: new Set(),
+    });
+
+    // find all content IDs associated with the changed schedules.
+    const [emailContentIds, magazineContentIds] = await Promise.all([
+      (async () => {
+        if (!emailScheduleIds.size) return [];
+        const ids = [...emailScheduleIds].map((id) => new ObjectID(id));
+        return repos.emailSchedule.distinct({ key: 'content.$id', query: { _id: { $in: ids } } });
+      })(),
+      (async () => {
+        if (!magazineScheduleIds.size) return [];
+        const ids = [...magazineScheduleIds].map((id) => new ObjectID(id));
+        return repos.magazineSchedule.distinct({ key: 'content.$id', query: { _id: { $in: ids } } });
+      })(),
+    ]);
+    // then merge them with the content ID set.
+    emailContentIds.forEach((id) => contentIds.add(id));
+    magazineContentIds.forEach((id) => contentIds.add(id));
+
+    const limit = 1000;
+    const query = { _id: { $in: [...contentIds] } };
+    const totalCount = await repos.platformContent.countDocuments({ query });
+    const projection = { ...standardProjection, ...getTenantProjection({ tenant }) };
+    const retriever = async ({ skip }) => repos.platformContent.find({
+      query,
+      options: {
+        sort: { _id: -1 },
+        limit,
+        skip,
+        projection,
+      },
+    });
+
+    const handler = async ({ results: cursor }) => {
+      const objects = [];
+      await iterateCursor(cursor, async (doc) => {
+        const object = await transform('platform.content', { doc, tenant }, { dataloaders, repos });
+        objects.push(object);
+      });
+      await index.saveObjects(objects);
+    };
+
+    await batch({
+      name: 'content.saveSince',
+      totalCount,
+      limit,
+      handler,
+      retriever,
+    });
   },
 };

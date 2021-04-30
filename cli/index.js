@@ -3,6 +3,7 @@
 const inquirer = require('inquirer');
 const sync = require('@algolia-website-search/sync');
 const mongodb = require('@algolia-website-search/sync/mongodb');
+const dayjs = require('dayjs');
 
 const { log } = console;
 
@@ -25,6 +26,10 @@ const run = async () => {
       type: 'input',
       name: 'tenant',
       message: 'Enter the tenant key for this operation',
+      validate: (tenant) => {
+        if (tenant.trim()) return true;
+        return 'A tenant must be provided.';
+      },
     },
     {
       type: 'list',
@@ -34,6 +39,7 @@ const run = async () => {
         { name: 'Content: Clear', value: 'content.clear' },
         { name: 'Content: Save One', value: 'content.saveOne' },
         { name: 'Content: Save All', value: 'content.saveAll' },
+        { name: 'Content: Save Since', value: 'content.saveSince' },
       ],
       when: (answers) => answers.command === 'sync',
     },
@@ -42,6 +48,21 @@ const run = async () => {
       name: 'contentId',
       message: 'Enter the content ID for the action.',
       when: ({ syncAction }) => ['content.saveOne', 'content.deleteOne'].includes(syncAction),
+      validate: (contentId) => {
+        if (!contentId || !contentId.length !== 8) return 'A valid content ID must be provided';
+        return true;
+      },
+    },
+    {
+      type: 'input',
+      name: 'since',
+      message: 'Enter the date to start syncing from.',
+      when: ({ syncAction }) => ['content.saveSince'].includes(syncAction),
+      validate: (since) => {
+        const date = dayjs(since);
+        return date.isValid();
+      },
+      filter: (since) => dayjs(since).toISOString(),
     },
   ];
 
@@ -50,6 +71,7 @@ const run = async () => {
     tenant,
     syncAction,
     contentId,
+    since,
   } = await inquirer.prompt(questions);
 
   if (command === 'sync') {
@@ -59,6 +81,9 @@ const run = async () => {
     switch (syncAction) {
       case 'content.saveOne':
         args = { id: contentId };
+        break;
+      case 'content.saveSince':
+        args = { date: since };
         break;
       default:
         args = {};
